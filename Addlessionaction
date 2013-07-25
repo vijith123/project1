@@ -1,0 +1,175 @@
+ package org.auburn.CSSE.action;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
+import java.util.UUID;
+
+import org.apache.commons.io.FileUtils;
+import org.auburn.CSSE.services.AddLessonService;
+
+public class AddLessonAction {
+	private String lessonName;
+	private String subtitle;
+	private String description;
+	private String subject;
+	private String title;
+	private File file;
+	private String contentType;
+    private String filename;
+    private String filePath;
+	private String Page;
+	private String NextOrSubmit;
+	private AddLessonService addLessonService;
+
+	public String execute() {
+		
+		/*System.out.println(getUploadFileName());
+		try
+		{
+			// C:\Users\vzb00_000\Desktop\project\AuburnCSSE\src\main\webapp\images
+			//Users\\vzb00_000\\Desktop\\project\\AuburnCSSE\\src\\main\\webapp\\images
+			getUpload().renameTo(new File ("C:\\Users\\vzb00_000\\Desktop\\project\\AuburnCSSE\\src\\main\\webapp\\images\\"+getUploadFileName()));
+			setFilePath("images\\"+getUploadFileName());
+			System.out.println(getFilePath());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}*/
+		AddLessonService addLessonServicee = new AddLessonService();
+		if(getTitle()==null)
+			setTitle("NONE");
+		if(getSubtitle()==null)
+			setSubtitle("NONE");
+		if(getDescription()==null)
+			setDescription("NONE");
+		
+		UUID idOne = UUID.randomUUID();
+		String ImageName;
+		
+		if(getUploadFileName() != null){
+			ImageName = idOne+getUploadFileName();
+           try {
+        	  
+        	   File fileToCreate = new File("C:\\Users\\vzb00_000\\Desktop\\images\\", ImageName);
+            	FileUtils.copyFile(getUpload(), fileToCreate);
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+			
+		}else
+			ImageName = "NONE";
+		
+		addLessonServicee.loadLesson(getSubject().trim(), getLessonName().trim(), getPage().trim(),
+				getTitle().trim(), getSubtitle().trim(), ImageName, getDescription().trim());
+		if (getNextOrSubmit().equals("Add Page")) {
+			pageIncreament();
+			return "next";
+		} else
+			return "submit";
+	}
+
+	public void pageIncreament() {
+
+		String incrementedPage = Integer.toString(Integer.parseInt(getPage()
+				.trim()) + 1);
+		setPage(incrementedPage);
+	}
+
+	public String getLessonName() {
+		return lessonName;
+	}
+
+	public void setLessonName(String lessonName) {
+		this.lessonName = lessonName;
+	}
+
+	public String getSubtitle() {
+		return subtitle;
+	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+	public void setUpload(File file) {
+		this.file = file;
+	}
+	public File getUpload()
+	{
+		return file;
+	}
+
+	public void setUploadContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	public String getUploadContentType()
+	{
+		return contentType;
+	}
+	public void setUploadFileName(String filename) {
+		this.filename = filename;
+	}
+	public String getUploadFileName()
+	{
+		return filename;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getNextOrSubmit() {
+		return NextOrSubmit;
+	}
+
+	public void setNextOrSubmit(String nextOrSubmit) {
+		NextOrSubmit = nextOrSubmit;
+	}
+
+	public AddLessonService getAddLessonService() {
+		return addLessonService;
+	}
+
+	public void setAddLessonService(AddLessonService addLessonService) {
+		this.addLessonService = addLessonService;
+	}
+
+	public String getPage() {
+		return Page;
+	}
+
+	public void setPage(String page) {
+		Page = page;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+}
